@@ -12,6 +12,10 @@ git submodule update
 set -e 
 cd `dirname $0`
 
+# Set download directory to speed up rebuilds by reusing packages
+export BR2_DL_DIR="${HOME}/.dl"
+mkdir -p "${BR2_DL_DIR}"
+
 if [ ! -e buildroot/.config ]
 then
 	echo "MISSING BUILDROOT CONFIGURATION FILE"
