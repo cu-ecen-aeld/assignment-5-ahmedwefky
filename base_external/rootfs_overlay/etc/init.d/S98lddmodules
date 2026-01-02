@@ -1,0 +1,34 @@
+#!/bin/sh
+
+case "$1" in
+    start)
+        echo "Loading ldd modules"
+        # Switch to /usr/bin where the modules and scripts are installed
+        cd /usr/bin
+        if [ -x ./scull_load ]; then
+            ./scull_load
+        fi
+        if [ -x ./module_load ]; then
+            ./module_load faulty
+        fi
+        # Load hello module using modprobe as requested
+        modprobe hello
+        ;;
+    stop)
+        echo "Unloading ldd modules"
+        rmmod hello
+        # Switch to /usr/bin where the scripts are installed
+        cd /usr/bin
+        if [ -x ./module_unload ]; then
+            ./module_unload faulty
+        fi
+        if [ -x ./scull_unload ]; then
+            ./scull_unload
+        fi
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit 0
